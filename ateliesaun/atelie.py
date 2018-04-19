@@ -17,10 +17,10 @@ class Tovar:
 #    def delete_spaces(self):
     #    return self.name.replace(" ", "")
 
-    # @property
-    # def tokens(self):
-    #     tokens = self.clean_name.split()
-    #     return tokens
+    @property
+    def tokens(self):
+        tokens = self.clean_name.split()
+        return tokens
 
     def print_tovar(self):
         print(self.brand, self.clean_name, '-', self.price)

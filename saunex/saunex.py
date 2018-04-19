@@ -13,6 +13,12 @@ class Tovar:
     def clean_name(self):
         return re.sub(r'[^\x00-\x7f]',r'', self.name).lstrip()
 
+    @property
+    def tokens(self):
+        tokens = self.clean_name.split()
+        return tokens
+
+
     def print_tovar(self):
         print(self.brand, self.name, '-', self.price)
 
@@ -53,13 +59,13 @@ def scrap95c(link):
         ahrefsoup = bloc.find('a')
         ahref = ahrefsoup["href"]
         #print('SSSSSSSSSSSSSSS__' + ahref)
-        scrappage(link = 'https://saunex.ru' + ahref)
+        scrappage(link = 'https://saunex.ru/' + ahref)
         #print(scrappage)
 
     ifnextpage = soup.find('ul', class_='list-inline').find_all('li')[-1:][0]
     ifnextpage = ifnextpage.find('a', class_='inline-link')
     if ifnextpage:
-        newlink = 'https://saunex.ru' + ifnextpage["href"]
+        newlink = 'https://saunex.ru/' + ifnextpage["href"]
         print(newlink)
         scrap95c(link = newlink)
 
