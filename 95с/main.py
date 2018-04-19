@@ -34,7 +34,7 @@ def scrappage(link):
 
 
 def scrap95c(link):
-    print("ya obrabativayu: " + link)
+    print("checking: " + link)
     page = requests.get(link)
     soup = BeautifulSoup(page.content, 'html.parser')
     blocs = soup.find_all('div', class_='cat_item')

@@ -2,32 +2,6 @@ import requests
 import re
 from bs4 import BeautifulSoup
 
-def is_equal(tovar1, tovar2):
-    weight = 0
-    if tovar1.brand == tovar2.brand:
-        weight = weight + 50
-    if tovar1.name == tovar2.name:
-        weight = weight + 50
-
-    # здесь еще какая- нибудь неточная проверка, например
-
-    # возьмем первые две буквы модели
-    first_two_letters = tovar1.name[:2]
-    first_two_letters2 = tovar2.name[:2]
-    # если первые две буквы совпадают
-    if first_two_letters == first_two_letters2:
-        # добавим 10% в уверенности что это одно и то же
-        weight += 10
-
-
-    # и так описываем разные проверки, которые могут помочь понять
-
-    # если в итоге по проверкам > 80%, то товары одни и те же
-    if weight > 80:
-        return True
-    else:
-        return False
-
 class Tovar:
     def __init__(self, brand, name, price):
         self.brand = brand
@@ -35,14 +9,18 @@ class Tovar:
         digits_price = re.sub("\D", "", price)
         self.price = int(digits_price)
 
-    @property
+    @property   #свойство, а не функция
     def clean_name(self):
         return re.sub(r'[^\x00-\x7f]',r'', self.name).lstrip()
 
-    @property
-    def tokens(self):
-        tokens = self.clean_name.split()
-        return tokens
+    #@property
+#    def delete_spaces(self):
+    #    return self.name.replace(" ", "")
+
+    # @property
+    # def tokens(self):
+    #     tokens = self.clean_name.split()
+    #     return tokens
 
     def print_tovar(self):
         print(self.brand, self.clean_name, '-', self.price)
@@ -53,7 +31,7 @@ def safe_cast(val, to_type, default=None):
     except (ValueError, TypeError):
         return default
 
-def scrappage(link):
+def scrappage(link):  #парсим подкаталог
     page = requests.get(link)
     #print(page) #выыодит на экрат simple html
     soup = BeautifulSoup(page.content, 'html.parser')
@@ -71,7 +49,7 @@ def scrappage(link):
         all_tovar.append(tovar)
 
 
-def atelie(link):
+def atelie(link):    #парсим заглавную страницу
     print("checking: " + link)
     page = requests.get(link)
     soup = BeautifulSoup(page.content, 'html.parser')

@@ -9,10 +9,12 @@ class Tovar:
         digits_price = re.sub("\D", "", price)
         self.price = int(digits_price)
 
+    @property   #свойство, а не функция
+    def clean_name(self):
+        return re.sub(r'[^\x00-\x7f]',r'', self.name).lstrip()
 
     def print_tovar(self):
         print(self.brand, self.name, '-', self.price)
-
 
 def scrappage(link):
     page = requests.get(link)
