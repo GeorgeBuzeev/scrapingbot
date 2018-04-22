@@ -10,7 +10,7 @@ class Tovar:
         self.price = int(digits_price)
 
     @property
-    def full_name(self): 
+    def full_name(self):
         return self.brand + self.name
 
     def print_tovar(self):

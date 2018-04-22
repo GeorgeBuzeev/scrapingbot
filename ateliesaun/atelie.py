@@ -3,11 +3,12 @@ import re
 from bs4 import BeautifulSoup
 
 class Tovar:
-    def __init__(self, brand, name, price):
+    def __init__(self, brand, name, price, site):
         self.brand = brand
         self.name = name
         digits_price = re.sub("\D", "", price)
         self.price = int(digits_price)
+        self.site = site
 
     @property   #свойство, а не функция
     def clean_name(self):
@@ -44,7 +45,7 @@ def scrappage(link):  #парсим подкаталог
     if 'harvia' in brand or "tylo" in brand or 'kastor' in brand:
         name = divwitha.find_all('span')[-1:][0].get_text()
         price = soup.find('div', class_='price_col').find('div', class_='price').find('span').get_text()
-        tovar = Tovar(brand, name, price)
+        tovar = Tovar(brand, name, price, 'ateliesaun')
         tovar.print_tovar()
         all_tovar.append(tovar)
 
