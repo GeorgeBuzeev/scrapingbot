@@ -9,7 +9,7 @@ class Tovar:
         digits_price = re.sub("\D", "", price)
         self.price = int(digits_price)
 
-    @property   #свойство, а не функция
+    @property  #свойство, а не функция
     def clean_name(self):
         return re.sub(r'[^\x00-\x7f]',r'', self.name).lstrip()
 
@@ -59,13 +59,13 @@ def scrap95c(link):
         ahrefsoup = bloc.find('a')
         ahref = ahrefsoup["href"]
         #print('SSSSSSSSSSSSSSS__' + ahref)
-        scrappage(link = 'https://saunex.ru/' + ahref)
+        scrappage(link = 'https://saunex.ru' + ahref)
         #print(scrappage)
 
     ifnextpage = soup.find('ul', class_='list-inline').find_all('li')[-1:][0]
     ifnextpage = ifnextpage.find('a', class_='inline-link')
     if ifnextpage:
-        newlink = 'https://saunex.ru/' + ifnextpage["href"]
+        newlink = 'https://saunex.ru' + ifnextpage["href"]
         print(newlink)
         scrap95c(link = newlink)
 

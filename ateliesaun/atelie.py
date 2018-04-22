@@ -17,10 +17,10 @@ class Tovar:
 #    def delete_spaces(self):
     #    return self.name.replace(" ", "")
 
-    @property
-    def tokens(self):
-        tokens = self.clean_name.split()
-        return tokens
+    # @property
+    # def tokens(self):
+    #     tokens = self.clean_name.split()
+    #     return tokens
 
     def print_tovar(self):
         print(self.brand, self.clean_name, '-', self.price)
@@ -43,7 +43,7 @@ def scrappage(link):  #парсим подкаталог
 
     if 'harvia' in brand or "tylo" in brand or 'kastor' in brand:
         name = divwitha.find_all('span')[-1:][0].get_text()
-        price = soup.find('div', class_='price').find('span').get_text()
+        price = soup.find('div', class_='price_col').find('div', class_='price').find('span').get_text()
         tovar = Tovar(brand, name, price)
         tovar.print_tovar()
         all_tovar.append(tovar)
@@ -79,7 +79,7 @@ def save_to_csv(tovary):
         writer = csv.writer(csvfile)
         writer.writerow(['brand', 'name', 'price'])
         for tovar in tovary:
-            writer.writerow([tovar.brand, tovar.name, tovar.price])
+            writer.writerow([tovar.brand, tovar.clean_name, tovar.price])
 
 def save_compound(tovary):
     import csv

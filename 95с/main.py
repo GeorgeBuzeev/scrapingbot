@@ -9,10 +9,30 @@ class Tovar:
         digits_price = re.sub("\D", "", price)
         self.price = int(digits_price)
 
+    @property
+    def full_name(self): 
+        return self.brand + self.name
 
     def print_tovar(self):
         print(self.brand, self.name, '-', self.price)
 
+# class BeautifulSoup:
+#     def __init__(self, content, stringg):
+#         self.content = content
+#         self.stringg = stringg
+#
+#     def find(self, stringg, class_):
+#         # magic with self.content
+#         resultat = BeautifulSoup(......)
+#         return resultat
+#
+#     def find_all(self, tag, class_):
+#         # magic with self.content
+#         resultat = [BeautifulSoup(......), BeautifulSoup(......)]
+#         return resultat
+#
+#     def get_text(self):
+#         return " gddgsdffg "
 
 def scrappage(link):
     page = requests.get(link)
@@ -25,8 +45,9 @@ def scrappage(link):
     if brand=='harvia' or brand == 'tylo':
         blocs = soup.find_all('a', class_='dc_item') #передвигаем вправо, чтобы работал if
             #print(blocs)
+        name1 = soup.find('h1', {"id": 'product_name_top'}).get_text()
         for bloc in blocs:
-            name = bloc.find_all('p', class_='name')[0].get_text()
+            name = name1 + bloc.find_all('p', class_='name')[0].get_text()
             price = bloc.find('p', class_='price').get_text()
             tovar = Tovar(brand, name, price)
             tovar.print_tovar()
