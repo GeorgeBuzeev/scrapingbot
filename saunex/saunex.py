@@ -20,7 +20,7 @@ class Tovar:
 
 
     def print_tovar(self):
-        print(self.brand, self.name, '-', self.price)
+        print(self.brand, self.clean_name, '-', self.price)
 
 def scrappage(link):
     page = requests.get(link)
@@ -32,7 +32,7 @@ def scrappage(link):
     brand = brand.find('li').find('div', class_='value')
     brand = brand.get_text().lower().lstrip().rstrip()
     #print(brand)
-    if brand=='harvia' or brand == 'tylo':
+    if 'harvia' in brand or 'tylo' in brand or 'helo' in brand or 'kastor' in brand:
         name = soup.find_all('span', {"itemprop": 'name'})[-1:][0].get_text()
         price = soup.find('span', class_='price').get_text()
         tovar = Tovar(brand, name, price)
@@ -59,13 +59,13 @@ def scrap95c(link):
         ahrefsoup = bloc.find('a')
         ahref = ahrefsoup["href"]
         #print('SSSSSSSSSSSSSSS__' + ahref)
-        scrappage(link = 'https://saunex.ru' + ahref)
+        scrappage(link = 'https://saunex.ru/' + ahref)
         #print(scrappage)
 
     ifnextpage = soup.find('ul', class_='list-inline').find_all('li')[-1:][0]
     ifnextpage = ifnextpage.find('a', class_='inline-link')
     if ifnextpage:
-        newlink = 'https://saunex.ru' + ifnextpage["href"]
+        newlink = 'https://saunex.ru/' + ifnextpage["href"]
         print(newlink)
         scrap95c(link = newlink)
 
@@ -76,7 +76,7 @@ def save_to_csv(tovary):
         writer = csv.writer(csvfile)
         writer.writerow(['brand', 'name', 'price'])
         for tovar in tovary:
-            writer.writerow([tovar.brand, tovar.name, tovar.price])
+            writer.writerow([tovar.brand, tovar.clean_name, tovar.price])
 
 all_tovar = []
 links = [

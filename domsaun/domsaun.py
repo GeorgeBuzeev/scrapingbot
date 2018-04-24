@@ -9,9 +9,12 @@ class Tovar:
         digits_price = re.sub("\D", "", price)
         self.price = int(digits_price)
 
+    @property   #свойство, а не функция
+    def clean_name(self):
+        return re.sub(r'[^\x00-\x7f]',r'', self.name).lstrip()
 
     def print_tovar(self):
-        print(self.brand, self.name, '-', self.price)
+        print(self.brand, self.clean_name, '-', self.price)
 
 
 def scrappage(link):
@@ -21,10 +24,10 @@ def scrappage(link):
         #print(soup.prettify())
 
     brand = soup.find('ol', class_='breadcrumb').find_all('li')[-1:][0].find('a').get_text().lower()
-    print(brand)
-    if 'harvia' in brand or "tylo" in brand or 'kastor' in brand:
-        name = bloc.find_all('li', class_='breadcrumb')[-1:][0].find('h1')[0].get_text()
-        price = bloc.find('p', class_='price').get_text()
+    #print(brand)
+    if 'harvia' in brand or "tylo" in brand or 'kastor' or "helo" in brand:
+        name = soup.find('div', {"id": 'page-header'}).find('h1').get_text()
+        price = soup.find('div', class_='price-wrap').find('span', class_='product-price').get_text()
         tovar = Tovar(brand, name, price)
         tovar.print_tovar()
         all_tovar.append(tovar)
@@ -39,7 +42,7 @@ def scrap95c(link):
         ahrefsoup = bloc.find('a')
         ahref = ahrefsoup["href"]
         #print('SSSSSSSSSSSSSSS__' + ahref)
-        scrappage(link = 'https://domsaun.ru/' + ahref)
+        scrappage(link = 'https://domsaun.ru' + ahref)
 
     # ifnextpage = soup.find('a', class_='next_page')
     # if ifnextpage:
@@ -50,11 +53,11 @@ def scrap95c(link):
 def save_to_csv(tovary):
     # пройти по всем объекта  и сохранить их в csv
     import csv
-    with open('95c.csv', 'w') as csvfile:
+    with open('domsaun.csv', 'w') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(['brand', 'name', 'price'])
         for tovar in tovary:
-            writer.writerow([tovar.brand, tovar.name, tovar.price])
+            writer.writerow([tovar.brand, tovar.clean_name, tovar.price])
 
 all_tovar = []
 links =[
