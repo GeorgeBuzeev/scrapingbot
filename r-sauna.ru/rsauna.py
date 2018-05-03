@@ -16,6 +16,11 @@ class Tovar:
     def print_tovar(self):
         print(self.brand, self.clean_name, '-', self.price)
 
+def clean_brand(dirty_brand):
+    brands = ["tylo", "harvia", "zhopa", "USY"]
+    for brand in brands:
+        if brand in dirty_brand:
+            return brand
 
 def scrappage(link):
     page = requests.get(link)
@@ -23,12 +28,14 @@ def scrappage(link):
     soup = BeautifulSoup(page.content, 'html.parser')
         #print(soup.prettify())
 
-    brand = soup.find('span', class_='B_crumbBox').find_all('a', class_='B_crumb')[-1:][0].find('a').get_text().lower()
+    brand = soup.find('span', class_='B_crumbBox').find_all('a', class_='B_crumb')[-1:][0].get_text().lower()
+    clean_brand = clean_brand(brand)
+
     #print(brand)
-    if 'harvia' in brand or "tylo" in brand or 'kastor' or "helo" in brand:
+    if 'harvia' in clean_brand or "tylo" in clean_brand or 'kastor' or "helo" in clean_brand:
         name = soup.find('div', class_='breadcrumbs').find('h1').get_text()
         price = soup.find('div', class_='characters').find('strong', class_='shk-price').get_text()
-        tovar = Tovar(brand, name, price)
+        tovar = Tovar(clean_brand, name, price)
         tovar.print_tovar()
         all_tovar.append(tovar)
 
@@ -53,7 +60,7 @@ def scrap95c(link):
 def save_to_csv(tovary):
     # пройти по всем объекта  и сохранить их в csv
     import csv
-    with open('domsaun.csv', 'w') as csvfile:
+    with open('rsauna.csv', 'w') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(['brand', 'name', 'price'])
         for tovar in tovary:
