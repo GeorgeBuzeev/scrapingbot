@@ -42,7 +42,7 @@ def scrappage(link):  #парсим подкаталог
     nyshnajassilka = divwitha.find_all('a')[-1:][0] #берем ссылку, в которой находится бренд
     brand = nyshnajassilka.get_text().lower() #из любого регистра нижний
 
-    if 'harvia' in brand or "tylo" in brand or 'kastor' in brand:
+    if 'harvia' in brand or 'tylo' in brand or 'helo' in brand: #or 'kastor' in brand:
         name = divwitha.find_all('span')[-1:][0].get_text()
         price = soup.find('div', class_='price_col').find('div', class_='price').find('span').get_text()
         tovar = Tovar(brand, name, price, 'ateliesaun')
@@ -81,14 +81,14 @@ def save_to_csv(tovary):
         writer.writerow(['brand', 'name', 'price'])
         for tovar in tovary:
             writer.writerow([tovar.brand, tovar.clean_name, tovar.price])
-
-def save_compound(tovary):
-    import csv
-    with open('atelie.csv', 'w') as csvfile:
-        writer = csv.writer(csvfile)
-        writer.writerow(['brand', 'name', 'price'])
-        for tovar in tovary:
-            writer.writerow([tovar.brand, tovar.name, tovar.price])
+#
+# def save_compound(tovary):
+#     import csv
+#     with open('atelie.csv', 'w') as csvfile:
+#         writer = csv.writer(csvfile)
+#         writer.writerow(['brand', 'name', 'price'])
+#         for tovar in tovary:
+#             writer.writerow([tovar.brand, tovar.name, tovar.price])
 
 all_tovar = []
 links = [

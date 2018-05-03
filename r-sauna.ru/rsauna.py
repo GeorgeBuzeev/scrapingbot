@@ -23,11 +23,11 @@ def scrappage(link):
     soup = BeautifulSoup(page.content, 'html.parser')
         #print(soup.prettify())
 
-    brand = soup.find('ol', class_='breadcrumb').find_all('li')[-1:][0].find('a').get_text().lower()
+    brand = soup.find('span', class_='B_crumbBox').find_all('a', class_='B_crumb')[-1:][0].find('a').get_text().lower()
     #print(brand)
     if 'harvia' in brand or "tylo" in brand or 'kastor' or "helo" in brand:
-        name = soup.find('div', {"id": 'page-header'}).find('h1').get_text()
-        price = soup.find('div', class_='price-wrap').find('span', class_='product-price').get_text()
+        name = soup.find('div', class_='breadcrumbs').find('h1').get_text()
+        price = soup.find('div', class_='characters').find('strong', class_='shk-price').get_text()
         tovar = Tovar(brand, name, price)
         tovar.print_tovar()
         all_tovar.append(tovar)
@@ -37,12 +37,12 @@ def scrap95c(link):
     print("checking: " + link)
     page = requests.get(link)
     soup = BeautifulSoup(page.content, 'html.parser')
-    blocs = soup.find_all('td', class_='title')
+    blocs = soup.find_all('div', class_='title')
     for bloc in blocs:
         ahrefsoup = bloc.find('a')
         ahref = ahrefsoup["href"]
         #print('SSSSSSSSSSSSSSS__' + ahref)
-        scrappage(link = 'https://domsaun.ru' + ahref)
+        scrappage(link = 'http://www.r-sauna.ru' + ahref)
 
     # ifnextpage = soup.find('a', class_='next_page')
     # if ifnextpage:
@@ -61,11 +61,9 @@ def save_to_csv(tovary):
 
 all_tovar = []
 links =[
-'https://domsaun.ru/catalog/electro/harvia/',
-'https://domsaun.ru/catalog/electro/helo/',
-'https://domsaun.ru/catalog/electro/tylo/',
-'https://domsaun.ru/catalog/fire/harvia/',
-'https://domsaun.ru/catalog/fire/kastor/'
+'http://www.r-sauna.ru/catalog/elektricheskie-pechi/harvia/',
+'http://www.r-sauna.ru/catalog/elektricheskie-pechi/helo/',
+'http://www.r-sauna.ru/catalog/elektricheskie-pechi/elektricheskie-pechi-tylo/',
 ]
 for link in links:
     scrap95c(link = link)

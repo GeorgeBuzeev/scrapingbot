@@ -10,11 +10,11 @@ class Tovar:
         self.price = int(digits_price)
 
     @property
-    def full_name(self):
-        return self.brand + self.name
+    def clean_name(self):
+        return re.sub(r'[^\x00-\x7f]',r'', self.name).lstrip()
 
     def print_tovar(self):
-        print(self.brand, self.name, '-', self.price)
+        print(self.brand, self.clean_name, '-', self.price)
 
 # class BeautifulSoup:
 #     def __init__(self, content, stringg):
@@ -77,7 +77,7 @@ def save_to_csv(tovary):
         writer = csv.writer(csvfile)
         writer.writerow(['brand', 'name', 'price'])
         for tovar in tovary:
-            writer.writerow([tovar.brand, tovar.name, tovar.price])
+            writer.writerow([tovar.brand, tovar.clean_name, tovar.price])
 
 all_tovar = []
 links = [

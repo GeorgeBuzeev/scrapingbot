@@ -1,21 +1,9 @@
 massiv = []
+##### SITE ONE 
 
+##### SITE TWO
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+##### COMPARE
 all_massiv = []
 
 istochniki = ["only", "95c", "ateliesaun", "saunnex"]
